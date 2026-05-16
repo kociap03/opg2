@@ -19,12 +19,12 @@ class TropicalFlower(Flower):
 
         return (
             datetime.now() - self.last_watered
-            > timedelta(days=2)
+            > timedelta(seconds=2)
         )
     
     def needs_fertilize(self):
 
         return (
             datetime.now() - self.last_fertilized
-            > timedelta(days=14)
+            > timedelta(seconds=2)
         )
