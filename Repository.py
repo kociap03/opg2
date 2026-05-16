@@ -1,4 +1,4 @@
-from Database import get_connection 
+from Database import get_connection #import funkce pro připojení k databázi
 from datetime import datetime
 
 from TropicalFlower import TropicalFlower
@@ -6,13 +6,13 @@ from NormalFlower import NormalFlower
 from SucculentFlower import SucculentFlower
 
 
-class FlowerRepository:
+class FlowerRepository:  #nová třída 
 
-    def add_flower(self, flower):
+    def add_flower(self, flower): #metoda pro přidání rostliiny do databáze (self-repository objekt, flower - objekt flower)
 
-        conn = get_connection()
+        conn = get_connection()  #otevření spojení s sqlite databazi
 
-        cursor = conn.execute("""
+        cursor = conn.execute("""     #spustí sql příkaz - vlož do flowers...
             INSERT INTO flowers (
                 name,
                 type,
@@ -22,18 +22,18 @@ class FlowerRepository:
             )
             VALUES (?, ?, ?, ?, ?)
         """, (
-            flower.name,
+            flower.name,   #bere data z objektu
             flower.type,
-            flower.last_watered.isoformat(),
+            flower.last_watered.isoformat(),  #převod datetime na text 
             flower.fertilize,
             flower.last_fertilized.isoformat()
         ))
 
-        conn.commit()
+        conn.commit()  #uložení změn do databáze
 
-        flower.id = cursor.lastrowid
+        flower.id = cursor.lastrowid   #vytvoření automatického id
 
-        conn.close()
+        conn.close()   #uzavření spojení
 
         return flower
 

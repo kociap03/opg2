@@ -19,7 +19,7 @@ class TropicalFlower(Flower):
 
         return (
             datetime.now() - self.last_watered
-            > timedelta(seconds=2)
+            > timedelta(seconds=15)
         )
     
     def needs_fertilize(self):

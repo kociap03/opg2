@@ -2,7 +2,7 @@ from datetime import datetime
 from abc import ABC, abstractmethod
 
 class Flower(ABC): # abystraktní rodičovská třída 
-    def __init__(self, id, name, type, fertilize, last_watered, last_fertilized): #konstruktor, když se vytvoří objekt (např Normal Flower), automatický se zavolá __init__
+    def __init__(self, id, name, type, fertilize, last_watered, last_fertilized): #konstruktor, ukládá data do objektu, když se vytvoří objekt (např Normal Flower), automatický se zavolá __init__
         self.id = id  #uloží id, jméno.. do objektu, objekt si pak pamatuje své id atd
         self.name = name
         self.type = type
