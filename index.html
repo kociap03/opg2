@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flowers</title>
+</head>
+<body>
+
+<h1>My Flowers</h1>
+
+<h2>Add Flower</h2>
+
+<form action="/add-form" method="POST">
+
+    <label>Name:</label>
+    <input type="text" name="name" required>
+
+    <br><br>
+
+    <label>Plant Type:</label>
+
+    <br>
+
+    <input type="radio" id="tropical" name="type" value="tropical" required>
+    <label for="tropical">Tropical Flower</label>
+
+    <br>
+
+    <input type="radio" id="normal" name="type" value="normal">
+    <label for="normal">Normal Flower</label>
+
+    <br>
+
+    <input type="radio" id="succulent" name="type" value="succulent">
+    <label for="succulent">Succulent</label>
+
+    <br><br>
+
+    <label>Needs Fertilizer:</label>
+
+    <br>
+
+    <input type="radio" id="fertilize_yes" name="fertilize" value="fertilize_yes" required>
+    <label for="tropical">Yes</label>
+
+    <br>
+
+    <input type="radio" id="fertilize_no" name="fertilize" value="fertilize_no">
+    <label for="normal">No</label>
+
+    <button type="submit">
+        Add Flower
+    </button>
+
+</form>
+
+<hr>
+
+<h2>Flower List</h2>
+
+<ul>
+    {% for flower in flowers %}
+        <li>
+
+            <b>{{ flower.name }}</b>
+
+            <br>
+
+            Type:
+            {{ flower.type }}
+
+            <br>
+
+            Last watered:
+            {{ flower.last_watered.strftime("%d.%m.%Y") }}      
+
+             <br>
+
+             {% if flower.fertilize %}
+                 Last fertilized:
+                {{ flower.last_fertilized.strftime("%d.%m.%Y") }}      
+                <br>
+            {% endif %}
+
+            Needs watering:
+            {{ "YES" if flower.needs_watering() else "NO" }}
+
+            <br>
+
+            Needs fertilize:
+            {{ "YES" if flower.needs_fertilize() else "NO" }}
+
+            <br><br>
+
+            <form action="/water/{{ flower.id }}" method="POST" style="display:inline;">
+                <button type="submit">
+                    Water
+                </button>
+            </form>
+
+            {% if flower.fertilize %}
+                <form action="/fertilize/{{ flower.id }}" method="POST" style="display:inline;">
+                    <button type="submit">
+                        Fertilize
+                    </button>
+                </form>
+            {% endif %}
+
+            <form action="/delete/{{ flower.id }}" method="POST" style="display:inline;">
+                <button type="submit">
+                    Delete
+                </button>
+            </form>
+
+            <br><br>
+
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
