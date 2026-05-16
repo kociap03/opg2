@@ -61,34 +61,49 @@
 
                     <div class="option-grid">
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="type"
-                               id="tropical"
-                               value="tropical"
-                               required>
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="type"
+                            id="tropical"
+                            value="tropical"
+                            required
+                        >
 
-                        <label class="option-card tropical-card" for="tropical">
+                        <label
+                            class="option-card tropical-card"
+                            for="tropical"
+                        >
                             🌴 Tropical Flower
                         </label>
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="type"
-                               id="normal"
-                               value="normal">
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="type"
+                            id="normal"
+                            value="normal"
+                        >
 
-                        <label class="option-card normal-card" for="normal">
+                        <label
+                            class="option-card normal-card"
+                            for="normal"
+                        >
                             🪴 Normal Flower
                         </label>
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="type"
-                               id="succulent"
-                               value="succulent">
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="type"
+                            id="succulent"
+                            value="succulent"
+                        >
 
-                        <label class="option-card succulent-card" for="succulent">
+                        <label
+                            class="option-card succulent-card"
+                            for="succulent"
+                        >
                             🌵 Succulent
                         </label>
 
@@ -104,24 +119,34 @@
 
                     <div class="option-grid">
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="fertilize"
-                               id="fertilize_yes"
-                               value="fertilize_yes"
-                               required>
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="fertilize"
+                            id="fertilize_yes"
+                            value="fertilize_yes"
+                            required
+                        >
 
-                        <label class="option-card yes-card" for="fertilize_yes">
+                        <label
+                            class="option-card yes-card"
+                            for="fertilize_yes"
+                        >
                             Yes
                         </label>
 
-                        <input type="radio"
-                               class="btn-check"
-                               name="fertilize"
-                               id="fertilize_no"
-                               value="fertilize_no">
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="fertilize"
+                            id="fertilize_no"
+                            value="fertilize_no"
+                        >
 
-                        <label class="option-card no-card" for="fertilize_no">
+                        <label
+                            class="option-card no-card"
+                            for="fertilize_no"
+                        >
                             No
                         </label>
 
@@ -145,153 +170,158 @@
             Flower List
         </h2>
 
-        <div class="row g-4">
+        <div class="row g-4 align-items-stretch">
 
             {% for flower in flowers %}
 
-            <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4 d-flex">
 
-                <div class="flower-card
+                    <div class="flower-card {% if flower.needs_watering() or (flower.fertilize and flower.needs_fertilize()) %}needs-attention{% endif %} {% if flower.type == 'TROPICAL' %}tropical-bg{% elif flower.type == 'NORMAL' %}normal-bg{% else %}succulent-bg{% endif %}">
 
-                    {% if flower.needs_watering()
-                       or (flower.fertilize and flower.needs_fertilize()) %}
+                        <div class="flower-header">
 
-                        needs-attention
+                            <div class="flower-icon">
 
-                    {% endif %}
+                                {% if flower.type == "TROPICAL" %}
+                                    🌴
+                                {% elif flower.type == "NORMAL" %}
+                                    🪴
+                                {% else %}
+                                    🌵
+                                {% endif %}
 
-                    {% if flower.type == 'TROPICAL' %}
-                        tropical-bg
-                    {% elif flower.type == 'NORMAL' %}
-                        normal-bg
-                    {% else %}
-                        succulent-bg
-                    {% endif %}
-                ">
+                            </div>
 
-                    <div class="flower-header">
+                            <div>
 
-                        <div class="flower-icon">
+                                <h3 class="flower-name">
+                                    {{ flower.name }}
+                                </h3>
 
-                            {% if flower.type == "TROPICAL" %}
-                                🌴
-                            {% elif flower.type == "NORMAL" %}
-                                🪴
-                            {% else %}
-                                🌵
-                            {% endif %}
+                            </div>
 
                         </div>
 
-                        <div>
-
-                            <h3 class="flower-name">
-                                {{ flower.name }}
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-                    <div class="flower-info">
-
-                        <p>
-                            💧 Last Watered:
-                            <strong>
-                                {{ flower.last_watered.strftime("%d.%m.%Y") }}
-                            </strong>
-                        </p>
-
-                        {% if flower.fertilize %}
+                        <div class="flower-info">
 
                             <p>
-                                🧪 Last Fertilized:
+                                💧 Last Watered:
                                 <strong>
-                                    {{ flower.last_fertilized.strftime("%d.%m.%Y") }}
+                                    {{ flower.last_watered.strftime("%d.%m.%Y") }}
                                 </strong>
                             </p>
 
-                        {% endif %}
+                            {% if flower.fertilize %}
 
-                    </div>
+                                <p>
+                                    🧪 Last Fertilized:
+                                    <strong>
+                                        {{ flower.last_fertilized.strftime("%d.%m.%Y") }}
+                                    </strong>
+                                </p>
 
-                    <hr>
-
-                    <div class="status-section">
-
-                        <p>
-                            <span class="water-label">
-                                Water:
-                            </span>
-
-                            {% if flower.needs_watering() %}
-                                <span class="status-bad">
-                                    Needs Water
-                                </span>
-                            {% else %}
-                                <span class="status-good">
-                                    OK
-                                </span>
                             {% endif %}
-                        </p>
 
-                        {% if flower.fertilize %}
+                        </div>
+
+                        <hr>
+
+                        <div class="status-section">
 
                             <p>
-                                <span class="fert-label">
-                                    Fertilizer:
+
+                                <span class="water-label">
+                                    Water:
                                 </span>
 
-                                {% if flower.needs_fertilize() %}
+                                {% if flower.needs_watering() %}
+
                                     <span class="status-bad">
-                                        Needs Fertilizer
+                                        Needs Water
                                     </span>
+
                                 {% else %}
+
                                     <span class="status-good">
                                         OK
                                     </span>
+
                                 {% endif %}
+
                             </p>
 
-                        {% endif %}
+                            {% if flower.fertilize %}
 
-                    </div>
+                                <p>
 
-                    <div class="button-row">
+                                    <span class="fert-label">
+                                        Fertilizer:
+                                    </span>
 
-                        <form action="/water/{{ flower.id }}" method="POST">
+                                    {% if flower.needs_fertilize() %}
 
-                            <button class="small-button water-btn">
-                                💧 Water
-                            </button>
+                                        <span class="status-bad">
+                                            Needs Fertilizer
+                                        </span>
 
-                        </form>
+                                    {% else %}
 
-                        {% if flower.fertilize %}
+                                        <span class="status-good">
+                                            OK
+                                        </span>
 
-                            <form action="/fertilize/{{ flower.id }}" method="POST">
+                                    {% endif %}
 
-                                <button class="small-button fert-btn">
-                                    🧪 Fertilize
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div class="button-row">
+
+                            <form
+                                action="/water/{{ flower.id }}"
+                                method="POST"
+                            >
+
+                                <button class="small-button water-btn">
+                                    💧 Water
                                 </button>
 
                             </form>
 
-                        {% endif %}
+                            {% if flower.fertilize %}
 
-                        <form action="/delete/{{ flower.id }}" method="POST">
+                                <form
+                                    action="/fertilize/{{ flower.id }}"
+                                    method="POST"
+                                >
 
-                            <button class="small-button delete-btn">
-                                🗑 Delete
-                            </button>
+                                    <button class="small-button fert-btn">
+                                        🧪 Fertilize
+                                    </button>
 
-                        </form>
+                                </form>
+
+                            {% endif %}
+
+                            <form
+                                action="/delete/{{ flower.id }}"
+                                method="POST"
+                            >
+
+                                <button class="small-button delete-btn">
+                                    🗑 Delete
+                                </button>
+
+                            </form>
+
+                        </div>
 
                     </div>
 
                 </div>
-
-            </div>
 
             {% endfor %}
 
@@ -302,4 +332,5 @@
 </div>
 
 </body>
+
 </html>

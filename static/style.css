@@ -147,7 +147,7 @@ body {
 
 .tropical-card {
 
-    background: #edf7ed;
+    background: #e4f4e6;
 
     border-color: #95d5b2;
 
@@ -228,9 +228,17 @@ body {
 
     padding: 25px;
 
-    height: 100%;
+    width: 100%;
 
     background: white;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    min-height: 420px;
 
     box-shadow:
         0 4px 15px rgba(0,0,0,0.05);
@@ -242,6 +250,17 @@ body {
 
     transform: translateY(-3px);
 }
+
+/* warning cards */
+
+.needs-attention {
+
+    box-shadow:
+        0 0 0 3px rgba(208, 0, 0, 0.16),
+        0 8px 22px rgba(208, 0, 0, 0.08);
+}
+
+/* backgrounds */
 
 .tropical-bg {
 
@@ -373,12 +392,4 @@ body {
     background: #ffe5e5;
 
     color: #d00000;
-}
-/* cards needing attention */
-
-.needs-attention {
-
-    box-shadow:
-        0 0 0 3px rgba(208, 0, 0, 0.18),
-        0 6px 18px rgba(208, 0, 0, 0.08);
 }

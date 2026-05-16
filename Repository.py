@@ -1,4 +1,4 @@
-from Database import get_connection
+from Database import get_connection 
 from datetime import datetime
 
 from TropicalFlower import TropicalFlower
@@ -13,14 +13,20 @@ class FlowerRepository:
         conn = get_connection()
 
         cursor = conn.execute("""
-            INSERT INTO flowers (name, type, last_watered, fertilize, last_fertilized)
+            INSERT INTO flowers (
+                name,
+                type,
+                last_watered,
+                fertilize,
+                last_fertilized
+            )
             VALUES (?, ?, ?, ?, ?)
         """, (
             flower.name,
             flower.type,
             flower.last_watered.isoformat(),
             flower.fertilize,
-            flower.last_watered.isoformat()
+            flower.last_fertilized.isoformat()
         ))
 
         conn.commit()
@@ -38,28 +44,30 @@ class FlowerRepository:
 
         rows = conn.execute("""
             SELECT * FROM flowers
-            ORDER BY last_watered ASC
         """).fetchall()
 
         conn.close()
+
         flowers = []
 
         for row in rows:
-            print(row["fertilize"], type(row["fertilize"]))
+
             if row["type"] == "TROPICAL":
 
                 flower = TropicalFlower(
                     id=row["id"],
                     name=row["name"],
+                    fertilize=bool(row["fertilize"]),
                     last_watered=datetime.fromisoformat(
                         row["last_watered"]
                     ),
                     last_fertilized=(
-    datetime.fromisoformat(row["last_fertilized"])
-    if row["last_fertilized"]
-    else None
-),
-                    fertilize=bool(row["fertilize"])
+                        datetime.fromisoformat(
+                            row["last_fertilized"]
+                        )
+                        if row["last_fertilized"]
+                        else None
+                    )
                 )
 
             elif row["type"] == "NORMAL":
@@ -67,15 +75,17 @@ class FlowerRepository:
                 flower = NormalFlower(
                     id=row["id"],
                     name=row["name"],
+                    fertilize=bool(row["fertilize"]),
                     last_watered=datetime.fromisoformat(
                         row["last_watered"]
                     ),
-                     last_fertilized=(
-    datetime.fromisoformat(row["last_fertilized"])
-    if row["last_fertilized"]
-    else None
-),
-                   fertilize=bool(row["fertilize"])
+                    last_fertilized=(
+                        datetime.fromisoformat(
+                            row["last_fertilized"]
+                        )
+                        if row["last_fertilized"]
+                        else None
+                    )
                 )
 
             elif row["type"] == "SUCCULENT":
@@ -83,21 +93,50 @@ class FlowerRepository:
                 flower = SucculentFlower(
                     id=row["id"],
                     name=row["name"],
+                    fertilize=bool(row["fertilize"]),
                     last_watered=datetime.fromisoformat(
                         row["last_watered"]
                     ),
                     last_fertilized=(
-    datetime.fromisoformat(row["last_fertilized"])
-    if row["last_fertilized"]
-    else None
-),
-                    fertilize=bool(row["fertilize"])
+                        datetime.fromisoformat(
+                            row["last_fertilized"]
+                        )
+                        if row["last_fertilized"]
+                        else None
+                    )
                 )
 
             else:
                 continue
 
             flowers.append(flower)
+
+        # priority sorting
+
+        flowers.sort(
+
+            key=lambda flower: (
+
+                # 1. water + fertilizer
+                not (
+                    flower.needs_watering()
+                    and (
+                        flower.fertilize
+                        and flower.needs_fertilize()
+                    )
+                ),
+
+                # 2. only water
+                not flower.needs_watering(),
+
+                # 3. only fertilizer
+                not (
+                    flower.fertilize
+                    and flower.needs_fertilize()
+                )
+
+            )
+        )
 
         return flowers
 
@@ -112,6 +151,7 @@ class FlowerRepository:
         )
 
         conn.commit()
+
         conn.close()
 
 
@@ -125,10 +165,15 @@ class FlowerRepository:
             UPDATE flowers
             SET last_watered = ?
             WHERE id = ?
-        """, (now, flower_id))
+        """, (
+            now,
+            flower_id
+        ))
 
         conn.commit()
+
         conn.close()
+
 
     def fertilize_flower(self, flower_id):
 
@@ -140,7 +185,11 @@ class FlowerRepository:
             UPDATE flowers
             SET last_fertilized = ?
             WHERE id = ?
-        """, (now, flower_id))
+        """, (
+            now,
+            flower_id
+        ))
 
         conn.commit()
+
         conn.close()
